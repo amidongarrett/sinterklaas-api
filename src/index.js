@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 
+const cors = require('cors');
 const express = require('express');
 const { connectDB } = require('./db');
 const groupsRouter = require('./routes/groups');
@@ -12,6 +13,7 @@ async function main() {
 
   const app = express();
   app.use(express.json());
+  app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000' }));
   app.use('/api/groups', groupsRouter);
   app.use('/api/wishlists', wishlistsRouter);
 
