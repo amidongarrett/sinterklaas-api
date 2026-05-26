@@ -7,6 +7,9 @@ const express = require('express');
 const { connectDB } = require('./db');
 const groupsRouter = require('./routes/groups');
 const wishlistsRouter = require('./routes/wishlists');
+const usersRouter = require('./routes/users');
+// Side-effect: register Invitation model with Mongoose before any query runs
+require('./models/Invitation');
 
 async function main() {
   await connectDB();
@@ -16,6 +19,7 @@ async function main() {
   app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000' }));
   app.use('/api/groups', groupsRouter);
   app.use('/api/wishlists', wishlistsRouter);
+  app.use('/api/users', usersRouter);
 
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
