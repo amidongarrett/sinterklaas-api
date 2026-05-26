@@ -1,0 +1,5 @@
+'use strict';
+
+const PLACEHOLDER_GROUP_OID = '000000000000000000000002';
+
+module.exports = { PLACEHOLDER_GROUP_OID };
