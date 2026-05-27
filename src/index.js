@@ -14,6 +14,16 @@ const authRouter = require('./routes/auth');
 require('./models/Invitation');
 
 async function main() {
+  const REQUIRED_ENV_VARS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'JWT_SECRET', 'MONGODB_URI'];
+  const missing = REQUIRED_ENV_VARS.filter((v) => !process.env[v]);
+  if (missing.length) {
+    console.error(
+      `Server startup aborted. Missing required environment variables: ${missing.join(', ')}\n` +
+      'Set them in your environment (or Render dashboard) and restart.'
+    );
+    process.exit(1);
+  }
+
   await connectDB();
 
   const app = express();
