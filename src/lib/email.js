@@ -1,22 +1,11 @@
 'use strict';
 
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: true, // port 465 uses SSL, not STARTTLS
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-  socketTimeout: 15000,
-});
+const resend = new Resend(process.env.SMTP_PASS);
 
 async function sendOtpEmail(to, code) {
-  await transporter.sendMail({
+  await resend.emails.send({
     from: 'noreply@amidonlabs.com',
     to,
     subject: 'Your Sinterklaas login code',
@@ -24,4 +13,4 @@ async function sendOtpEmail(to, code) {
   });
 }
 
-module.exports = { sendOtpEmail, transporter };
+module.exports = { sendOtpEmail };

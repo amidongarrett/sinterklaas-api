@@ -10,12 +10,11 @@ const groupsRouter = require('./routes/groups');
 const wishlistsRouter = require('./routes/wishlists');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const { transporter } = require('./lib/email');
 // Side-effect: register Invitation model with Mongoose before any query runs
 require('./models/Invitation');
 
 async function main() {
-  const REQUIRED_ENV_VARS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'JWT_SECRET', 'MONGODB_URI'];
+  const REQUIRED_ENV_VARS = ['SMTP_PASS', 'JWT_SECRET', 'MONGODB_URI'];
   const missing = REQUIRED_ENV_VARS.filter((v) => !process.env[v]);
   if (missing.length) {
     console.error(
@@ -41,9 +40,6 @@ async function main() {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
-    transporter.verify()
-      .then(() => console.log('SMTP connection verified'))
-      .catch((err) => console.warn('SMTP connection check failed (server will still run):', err.message));
   });
 }
 
