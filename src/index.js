@@ -19,7 +19,9 @@ async function main() {
   const app = express();
   app.use(cookieParser());
   app.use(express.json());
-  app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000', credentials: true }));
+  const corsOptions = { origin: process.env.CORS_ORIGIN || 'http://localhost:3000', credentials: true };
+  app.options('*', cors(corsOptions));   // handle all OPTIONS preflight requests
+  app.use(cors(corsOptions));            // attach CORS headers to every response
   app.use('/api/auth', authRouter);
   app.use('/api/groups', groupsRouter);
   app.use('/api/wishlists', wishlistsRouter);
